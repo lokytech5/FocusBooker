@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UsersController {
@@ -43,5 +44,17 @@ public class UsersController {
     public ResponseEntity<UsersDTO> getUserProfile(@PathVariable Long userId){
         UsersDTO usersDTO = usersService.findUserProfile(userId);
         return new ResponseEntity<>(usersDTO, HttpStatus.OK);
+    }
+
+    @PatchMapping("/users/{userId}/profile")
+    public ResponseEntity<UsersDTO> UpdateUserProfile(@PathVariable Long userId, @RequestBody Map<String, Object> updates){
+        UsersDTO usersDTO = usersService.updateUserProfile(userId, updates);
+        return new ResponseEntity<>(usersDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long userId){
+        usersService.deleteUsersById(userId);
+        return new ResponseEntity<>("User deleted Successfully", HttpStatus.OK);
     }
 }
