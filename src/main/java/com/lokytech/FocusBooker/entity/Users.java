@@ -3,15 +3,23 @@ package com.lokytech.FocusBooker.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public class Users {
+public class Users{
     @Id
     @GeneratedValue
     private Long id;
 
+    @NotBlank(message = "username can not be Empty")
     private String username;
+
+    @Email(message = "Invalid email format")
+    @NotBlank(message = "Email can not be Empty")
     private String email;
+
+    @NotBlank(message = "Password field can be Empty")
     private String password;
 
     public Users() {
