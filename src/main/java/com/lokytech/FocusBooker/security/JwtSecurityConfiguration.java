@@ -42,6 +42,11 @@ public class JwtSecurityConfiguration {
                                         // User Endpoints
                                         .requestMatchers(new AntPathRequestMatcher("/users")).hasRole("ADMIN")
                                         .requestMatchers(new AntPathRequestMatcher("/users/**")).hasAnyRole("ADMIN", "USER")
+
+                                        // Booking Endpoints
+                                        .requestMatchers(new AntPathRequestMatcher("/booking")).hasRole("ADMIN")
+                                        .requestMatchers(new AntPathRequestMatcher("/users/{userId}/booking")).hasAnyRole("ADMIN", "USER")
+                                        .requestMatchers(new AntPathRequestMatcher("/booking/{id}")).hasAnyRole("ADMIN", "USER")  // General user routes
                                         .anyRequest().authenticated()
                 )
 
