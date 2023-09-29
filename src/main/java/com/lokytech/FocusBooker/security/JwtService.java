@@ -8,12 +8,16 @@ import com.nimbusds.jwt.SignedJWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class JwtService {
@@ -67,6 +71,35 @@ public class JwtService {
         } catch (ParseException e) {
             logger.error("Error while checking token expiration", e);
             return false;
+        }
+    }
+
+    public String getUsernameFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+            return claimsSet.getSubject();
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public List<GrantedAuthority> getAuthoritiesFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
+
+            List<String> roles = (List<String>) claimsSet.getClaim("roles");
+
+            if (roles != null) {
+                return roles.stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+            } else {
+                return Collections.emptyList();
+            }
+        } catch (ParseException e) {
+            return Collections.emptyList();
         }
     }
 
