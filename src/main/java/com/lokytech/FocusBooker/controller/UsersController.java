@@ -1,14 +1,12 @@
 package com.lokytech.FocusBooker.controller;
 
 import com.lokytech.FocusBooker.entity.Users;
+import com.lokytech.FocusBooker.exception.UserNotFoundException;
 import com.lokytech.FocusBooker.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +17,19 @@ public class UsersController {
 
     @GetMapping("/users")
     public ResponseEntity<List<Users>> GetAllUsers(){
-        List<Users> users = usersService.findAll();
+        List<Users> users = usersService.findAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<?> getUserById(@PathVariable Long userId){
+        try{
+            Users users = usersService.findUserById(userId);
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (UserNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping("/users")
