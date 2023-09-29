@@ -6,6 +6,9 @@ import com.lokytech.FocusBooker.exception.UserNotFoundException;
 import com.lokytech.FocusBooker.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,12 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UsersService {
+public class UsersService implements UserDetailsService {
     @Autowired
     private UsersRepository usersRepository;
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
+    }
 
     public Users saveUsers(Users users){
         return usersRepository.save(users);
@@ -50,9 +58,5 @@ public class UsersService {
     public void deleteUsersById(Long id){
         usersRepository.deleteById(id);
     }
-
-
-
-
 
 }
