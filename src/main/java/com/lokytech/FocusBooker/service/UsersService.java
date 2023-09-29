@@ -1,17 +1,23 @@
 package com.lokytech.FocusBooker.service;
 
 import com.lokytech.FocusBooker.dto.UsersDTO;
+import com.lokytech.FocusBooker.entity.Roles;
 import com.lokytech.FocusBooker.entity.Users;
+import com.lokytech.FocusBooker.exception.RoleNotFoundException;
 import com.lokytech.FocusBooker.exception.UserNotFoundException;
+import com.lokytech.FocusBooker.repository.RoleRepository;
 import com.lokytech.FocusBooker.repository.UsersRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -21,14 +27,27 @@ public class UsersService implements UserDetailsService {
     private UsersRepository usersRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+
+        return user;
     }
 
-    public Users saveUsers(Users users){
+    public Users saveUser(Users users, String role, BCryptPasswordEncoder bCryptPasswordEncoder){
+        Roles roleEntity = roleRepository.findByName(role)
+                .orElseThrow(() -> new RoleNotFoundException("Role not found"));
+        users.setPassword(bCryptPasswordEncoder.encode(users.getPassword()));
+        users.setRoles(new HashSet<>(Arrays.asList(roleEntity)));
         return usersRepository.save(users);
     }
 
@@ -45,6 +64,7 @@ public class UsersService implements UserDetailsService {
                 .orElseThrow(() -> new UserNotFoundException("User Not found"));
         return modelMapper.map(users, UsersDTO.class);
     }
+
      public UsersDTO updateUserProfile(Long id, @Validated Map<String, Object> update){
         Users users = usersRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User Not found"));

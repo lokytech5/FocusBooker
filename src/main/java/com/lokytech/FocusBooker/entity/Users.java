@@ -25,7 +25,7 @@ public class Users implements UserDetails {
     @NotBlank(message = "Email can not be Empty")
     private String email;
 
-    @NotBlank(message = "Password field can be Empty")
+    @NotBlank(message = "Password field can not be Empty")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -103,5 +103,13 @@ public class Users implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
     }
 }
