@@ -35,9 +35,9 @@ public class JwtSecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests ->
                                 authorizeRequests
                                         // Open registration to all Public endpoints
-//                                .requestMatchers(new AntPathRequestMatcher("/public/**")).permitAll()
-                                        .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+//                                        .requestMatchers(new AntPathRequestMatcher("/public/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/register/**")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
 
                                         // User Endpoints
                                         .requestMatchers(new AntPathRequestMatcher("/users")).hasRole("ADMIN")

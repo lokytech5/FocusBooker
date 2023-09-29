@@ -34,12 +34,6 @@ public class UsersController {
 
     }
 
-//    @PostMapping("/users")
-//    public ResponseEntity<Users> createUsers(@RequestBody Users users){
-//        users = usersService.saveUsers(users);
-//        return new ResponseEntity<>(users, HttpStatus.CREATED);
-//    }
-
     @GetMapping("/users/{userId}/profile")
     public ResponseEntity<UsersDTO> getUserProfile(@PathVariable Long userId){
         UsersDTO usersDTO = usersService.findUserProfile(userId);

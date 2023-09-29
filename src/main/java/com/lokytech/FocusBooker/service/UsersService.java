@@ -43,12 +43,13 @@ public class UsersService implements UserDetailsService {
         return user;
     }
 
-    public Users saveUser(Users users, String role, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public UsersDTO saveUser(Users users, String role, BCryptPasswordEncoder bCryptPasswordEncoder){
         Roles roleEntity = roleRepository.findByName(role)
                 .orElseThrow(() -> new RoleNotFoundException("Role not found"));
         users.setPassword(bCryptPasswordEncoder.encode(users.getPassword()));
         users.setRoles(new HashSet<>(Arrays.asList(roleEntity)));
-        return usersRepository.save(users);
+         usersRepository.save(users);
+         return modelMapper.map(users, UsersDTO.class);
     }
 
     public List<Users> findAllUsers(){
