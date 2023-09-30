@@ -36,6 +36,8 @@ public class JwtSecurityConfiguration {
                                 authorizeRequests
                                         // Open registration to all Public endpoints
 //                                        .requestMatchers(new AntPathRequestMatcher("/public/**")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
+                                        .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/register/**")).permitAll()
                                         .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
 
