@@ -19,9 +19,9 @@ focusBooker leverages Swagger for API documentation. With Swagger's interactive 
 3. Explore the available endpoints, their details, and try them out directly from the UI.
 
 ## Swagger UI Screenshots:
-![Swagger Screenshot 1](/resources/static/Screen1.png) </br>
-![Swagger Screenshot 2](/resources/static/Screen2.png) </br>
-![Swagger Screenshot 3](/resources/static/Screen3.png)
+![Swagger Screenshot 1](/src/main/resources/static/Screen1.png) </br>
+![Swagger Screenshot 2](/src/main/resources/static/Screen2.png) </br>
+![Swagger Screenshot 3](/src/main/resources/static/Screen3.png)
 
 ## 🛠 Setup & Installation
 1. Clone the repository:
